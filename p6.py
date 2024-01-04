@@ -1,90 +1,44 @@
 import pandas as pd
 import numpy as np
 
-data = pd.DataFrame(data=pd.read_csv(Human.csv'))
+data = pd.DataFrame(data=pd.read_csv('Human.csv'))
 person = pd.DataFrame(data=pd.read_csv('Person.csv'))
 
-n_male = data[ Gender" ][data[ Gender" ]
-n_female = data[ Gender" ][data[ Gender]
-total_ppl = data[ Gender" ].count()
+n_male = data['Gender'][data['Gender']=='male'].count()
+n_female = data['Gender'][data['Gender']=='female'].count()
+total_ppl = data['Gender'].count()
 
-‘male"]. count ()
-female". count()
+p_male = n_male/total_ppl
+p_female = n_female/total_ppl
 
-P_male = n_male/total_ppl
-P_female = n_female/total_ppl
+data_means = data.groupby('Gender').mean()
+data__variance = data.groupby('Gender').var()
 
-data_means = data.groupby( Gender" ).mean()
-data_variance = data.groupby(’Gender').var()
+male_Height_mean = data_means['Height'][data__variance.index=='male'].values[0]
+male_Weight_mean = data_means['Weight'][data__variance.index=='male'].values[0]
+male_footsize_mean = data_means['Foot_Size'][data__variance.index=='male'].values[0]
 
-male height mean = data_means['Height'][data_variance. index
-‘male’ ].values[6]
+male_Height_variance = data__variance['Height'][data__variance.index=='male'].values[0]
+male_Weight_variance = data__variance['Weight'][data__variance.index=='male'].values[0]
+male_footsize_variance = data__variance['Foot_Size'][data__variance.index=='male'].values[0]
 
-nale_weight mean = data_means['Weight'][data_variance. index
-‘male’ ].values[6]
+female_Height_mean = data_means['Height'][data__variance.index=='female'].values[0]
+female_Weight_mean = data_means['Weight'][data__variance.index=='female'].values[0]
+female_footsize_mean = data_means['Foot_Size'][data__variance.index=='female'].values[0]
 
-nale_footsize_mean = data_means['Foot_Size'][data_variance. index
-== 'male’].values[e]
+female_Height_variance = data__variance['Height'][data__variance.index=='female'].values[0]
+female_Weight_variance = data__variance['Weight'][data__variance.index=='female'].values[0]
+female_footsize_variance = data__variance['Foot_Size'][data__variance.index=='female'].values[0]
 
-nale_height_variance =
-data_variance[ ‘Height ][data_variance. index
-nale weight variance =
-data_variance[ ‘Weight ][data_variance. index
-male_footsize_variance =
+def p_x_given_y(x,mean_y,variance_y):
+    p = 1/(np.sqrt(2*np.pi*variance_y))*np.exp((-(x-mean_y)**2)/(2*variance_y))
+    return p
 
-data_variance[ 'Foot_Size'][data_variance. index
-‘male’ ].values[0]
+PMale = p_male*p_x_given_y(person['Height'][0],male_Height_mean,male_Height_variance)*p_x_given_y(person['Weight'][0],male_Weight_mean,male_Weight_variance)*p_x_given_y(person['Foot_Size'][0],male_footsize_mean,male_footsize_variance)     
+PFemale = p_female*p_x_given_y(person['Height'][0],female_Height_mean,female_Height_variance)*p_x_given_y(person['Weight'][0],female_Weight_mean,female_Weight_variance)*p_x_given_y(person['Foot_Size'][0],female_footsize_mean,female_footsize_variance)
 
-‘male’ ].values[6]
-
-‘male’ ].values[6]
-
-female_height mean = data_means[ 'Height'][data_variance. index ==
-female" ].values[0]
-
-female_weight mean = data_means[ 'Weight'][data_variance. index ==
-‘female'].values[@]
-
-female_footsize mean =
-data_means['Foot_Size'][data_variance. index
-*female'].values[o]
-
-female_height variance =
-data_variance[ ‘Height ][data_variance. index ==
-*fenale'].values[e]
-
-female_weight_variance =
-data_variance[ ‘Weight ][data_variance. index
-‘fenale'].values[e]
-
-female_footsize variance =
-data_variance( 'Foot_Size'][data_variance. index
-*female'].values[0]
-
-def p_x_given_y(x, mean_y, variance_y):
-# Input the arguments into a probability density function
-p = 1/(np.sqrt(2*np.pi*variance_y)) * np.exp((-(x-
-mean_y)**2)/(2*variance_y))
-return p
-
-PMale = P_male * p_x_given_y(person[ 'Height'][e],
-nale_height_mean, male height variance) *
-p_x_given_y(person[ ‘Weight '][6], male_weight mean,
-
-male weight variance) * p_x_given_y(person['Foot_Size'][e],
-male_footsize mean, male_footsize variance)
-
-PFemale = P_female * p_x_given_y(person[‘Height'][@],
-female_height mean, female_height_variance) *
-p_x_given_y(person[ ‘Weight"][0], female weight mean,
-Female_weight_variance) * p_x_given_y(person['Foot_Size'][e],
-female_footsize_mean, female_footsize variance)
-
-if(PMale > PFemale):
-print("The given data belongs to Male with Probability of
-",PMale)
+if(PMale>PFemale):
+     print("the given data belongs to male with probability of",PMale)
 else:
-print,
-",PFemale)
+     print("the given data belongs to female with probability of",PFemale)   
 
-“The given data belongs to Female with Probability of
